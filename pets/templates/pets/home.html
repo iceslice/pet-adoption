@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-5 mb-4 bg-white rounded-3 shadow-sm text-center">
+  <h1 class="display-5">Find your new best friend 🐕🐈</h1>
+  <p class="lead">Browse pets waiting for a loving home and apply to adopt in minutes.</p>
+  <a href="{% url 'pet_list' %}" class="btn btn-primary btn-lg">Browse Pets</a>
+</div>
+<h3 class="mb-3">Recently added</h3>
+<div class="row g-4">
+  {% for pet in pets %}{% include 'pets/_pet_card.html' %}{% empty %}<p>No pets available right now.</p>{% endfor %}
+</div>
+{% endblock %}

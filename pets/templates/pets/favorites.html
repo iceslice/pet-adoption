@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}My Favorites{% endblock %}
+{% block content %}
+<h2 class="mb-3">❤️ My Favorite Pets</h2>
+<div class="row g-4">
+  {% for pet in pets %}{% include 'pets/_pet_card.html' %}
+  {% empty %}<p class="text-muted">No favorites yet. <a href="{% url 'pet_list' %}">Browse pets</a> and tap ♡ to save some.</p>{% endfor %}
+</div>
+{% endblock %}

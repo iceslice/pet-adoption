@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}{{ pet.name }}{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="row g-0">
+    <div class="col-md-5">
+      {% if pet.image %}
+        <img src="{{ pet.image.url }}" class="img-fluid rounded-start w-100" alt="{{ pet.name }}">
+      {% else %}
+        <div class="bg-secondary text-white d-flex align-items-center justify-content-center h-100" style="min-height:300px;">No image</div>
+      {% endif %}
+    </div>
+    <div class="col-md-7">
+      <div class="card-body">
+        <h2>{{ pet.name }}</h2>
+        <ul class="list-unstyled">
+          <li><strong>Type:</strong> {{ pet.animal_type }}</li>
+          <li><strong>Breed:</strong> {{ pet.breed|default:"—" }}</li>
+          <li><strong>Age:</strong> {{ pet.age }} year{{ pet.age|pluralize }}</li>
+          <li><strong>Gender:</strong> {{ pet.gender }}</li>
+          <li><strong>Location:</strong> {{ pet.location }}</li>
+          <li><strong>Status:</strong>
+            <span class="badge {% if pet.is_available %}bg-success{% else %}bg-secondary{% endif %}">{{ pet.status }}</span>
+          </li>
+        </ul>
+        <h5>About {{ pet.name }}</h5>
+        <p>{{ pet.description|linebreaksbr }}</p>
+
+        {% if not pet.is_available %}
+          <div class="alert alert-danger">❌ This pet has already been adopted.</div>
+        {% elif has_pending %}
+          <div class="alert alert-info">You already have a pending application for {{ pet.name }}.</div>
+        {% elif user.is_authenticated %}
+          <a href="{% url 'apply' pet.pk %}" class="btn btn-success">Apply for Adoption</a>
+        {% else %}
+          <a href="{% url 'login' %}?next={% url 'apply' pet.pk %}" class="btn btn-success">Login to Apply</a>
+        {% endif %}
+        <a href="{% url 'pet_list' %}" class="btn btn-outline-secondary">Back</a>
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'toggle_favorite' pet.pk %}" class="d-inline">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          {% if pet.pk in favorite_ids %}
+            <button class="btn btn-danger">♥ Favorited</button>
+          {% else %}
+            <button class="btn btn-outline-danger">♡ Add to Favorites</button>
+          {% endif %}
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

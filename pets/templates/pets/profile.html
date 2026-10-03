@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="card shadow-sm" style="max-width:520px;">
+  <div class="card-body">
+    <h3>My Profile</h3>
+    <ul class="list-unstyled mb-3">
+      <li><strong>Username:</strong> {{ user.username }}</li>
+      <li><strong>Email:</strong> {{ user.email|default:"—" }}</li>
+      <li><strong>Joined:</strong> {{ user.date_joined|date:"d M Y" }}</li>
+      <li><strong>Applications submitted:</strong> {{ request_count }}</li>
+      <li><strong>Favorite pets:</strong> {{ favorite_count }}</li>
+    </ul>
+    <a href="{% url 'my_requests' %}" class="btn btn-primary">View My Requests</a>
+  </div>
+</div>
+{% endblock %}

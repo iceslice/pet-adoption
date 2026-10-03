@@ -1,0 +1,30 @@
+<div class="col-12 col-sm-6 col-lg-4">
+  <div class="card h-100 shadow-sm">
+    {% if pet.image %}
+      <img src="{{ pet.image.url }}" class="card-img-top" alt="{{ pet.name }}" style="height:220px;object-fit:cover;">
+    {% else %}
+      <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height:220px;">No image</div>
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{ pet.name }}
+        <span class="badge {% if pet.is_available %}bg-success{% else %}bg-secondary{% endif %} float-end">{{ pet.status }}</span>
+      </h5>
+      <p class="card-text mb-1"><strong>{{ pet.animal_type }}</strong>{% if pet.breed %} · {{ pet.breed }}{% endif %}</p>
+      <p class="card-text text-muted small mb-0">{{ pet.age }} yr · {{ pet.gender }} · {{ pet.location }}</p>
+    </div>
+    <div class="card-footer bg-white border-0 d-flex gap-2">
+      <a href="{% url 'pet_detail' pet.pk %}" class="btn btn-primary btn-sm flex-grow-1">View Details</a>
+      {% if user.is_authenticated %}
+      <form method="post" action="{% url 'toggle_favorite' pet.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        {% if pet.pk in favorite_ids %}
+          <button class="btn btn-danger btn-sm" title="Remove from favorites">♥</button>
+        {% else %}
+          <button class="btn btn-outline-danger btn-sm" title="Add to favorites">♡</button>
+        {% endif %}
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</div>

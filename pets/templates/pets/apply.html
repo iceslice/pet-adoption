@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Adopt {{ pet.name }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h3 class="mb-3">Adoption Application — {{ pet.name }}</h3>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {% for field in form %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{{ field.label }}</label>
+            {% if field.name == 'previous_pet_experience' %}
+              <div>{% for radio in field %}
+                <div class="form-check form-check-inline">{{ radio.tag }} <label class="form-check-label" for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label></div>
+              {% endfor %}</div>
+            {% else %}
+              {{ field }}
+            {% endif %}
+            {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+          {% endfor %}
+          <button class="btn btn-success">Submit Application</button>
+          <a href="{% url 'pet_detail' pet.pk %}" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

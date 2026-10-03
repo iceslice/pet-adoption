@@ -34,7 +34,7 @@ Python 3, Django, Django REST Framework, django-filter, Pillow, Bootstrap 5, SQL
 ## Setup (Windows / VS Code)
 
 ```powershell
-git clone <your-repo-url>
+git clone https://github.com/iceslice/pet-adoption.git pet_adoption
 cd pet_adoption
 python -m venv venv
 venv\Scripts\Activate.ps1
